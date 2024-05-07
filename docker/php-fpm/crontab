@@ -1,0 +1,2 @@
+* * * * * php /var/www/bin/console twoje:polecenie:symfony
+# Pamiętaj o dodaniu pustej linii na końcu pliku
