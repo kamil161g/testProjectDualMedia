@@ -70,6 +70,7 @@ class CreateOrderCommandHandler
                 $orderData['orderDataProducts']);
 
         } catch (Throwable $exception) {
+            $transactionManager->rollback();
             $this->databaseOperationSupport->logger()->logError($exception, 'CreateOrderHandler');
             throw new CreateOrderException($exception->getMessage());
         }
