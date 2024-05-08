@@ -22,7 +22,15 @@ class CreateOrderValidator
 
     public function isValid(OrderInputDTO $orderInputDTO): bool
     {
+        $productIds = [];
+
         foreach ($orderInputDTO->getItems() as $item) {
+            if (in_array($item->getProductId(), $productIds, true)) {
+                return false;
+            }
+
+            $productIds[] = $item->getProductId();
+
             $product = $this->productRepository->getById($item->getProductId());
             if (false === $product instanceof Product || $product->isAvailability() === false) {
                 return false;

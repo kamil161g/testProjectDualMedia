@@ -2,3 +2,8 @@ create_order:
     path: /order
     controller: App\Controller\Order\CreateOrderController::create
     methods: POST
+
+get_order:
+    path: /order/{orderId}
+    controller: App\Controller\Order\ViewOrderController::getOrder
+    methods: GET
