@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Facade\Order;
 
+use App\Calculator\PricingCalculator;
 use App\DTO\Order\OrderInputDTO;
 use App\Factory\Order\OrderFactory;
 use App\Factory\Order\OrderItemsFactory;
@@ -18,22 +19,25 @@ class OrderProcessingFacade
     private ProductRepository $productRepository;
     private OrderFactory $orderFactory;
     private OrderItemsFactory $orderItemsFactory;
+    private PricingCalculator $pricingCalculator;
 
     public function __construct(
         ProductRepository $productRepository,
         OrderFactory $orderFactory,
-        OrderItemsFactory $orderItemsFactory
+        OrderItemsFactory $orderItemsFactory,
+        PricingCalculator $pricingCalculator
     ) {
         $this->productRepository = $productRepository;
         $this->orderFactory = $orderFactory;
         $this->orderItemsFactory = $orderItemsFactory;
+        $this->pricingCalculator = $pricingCalculator;
     }
 
     public function processOrder(OrderInputDTO $orderInputDTO): array
     {
         $productsToOrderData = [];
         $products = [];
-        $totalPrice = 0.0;
+
         foreach ($orderInputDTO->getItems() as $item) {
             $product = $this->productRepository->getById($item->getProductId());
             $quantity = $item->getQuantity();
@@ -41,12 +45,13 @@ class OrderProcessingFacade
                 'productId' => $product,
                 'quantity' => $quantity,
             ];
-            $totalPrice += $product->getPrice();
             $productsToOrderData[] = new ProductToSummaryOrderModel($product->getId(), $quantity, $product->getName());
         }
+        $pricingData = $this->pricingCalculator->calculateOrder($products);
+
 
         $orderItems = [];
-        $order = $this->orderFactory->create($orderInputDTO, $totalPrice);
+        $order = $this->orderFactory->create($orderInputDTO, $pricingData['total']);
 
         foreach ($products as $product) {
             $orderItems[] = $this->orderItemsFactory->create($product['productId'], $order, $product['quantity']);
@@ -55,7 +60,8 @@ class OrderProcessingFacade
         return [
             'order' => $order,
             'orderItems' => $orderItems,
-            'orderDataProducts' => $productsToOrderData
+            'orderDataProducts' => $productsToOrderData,
+            'pricingData' => $pricingData
         ];
     }
 
