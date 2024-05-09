@@ -11,7 +11,7 @@ services:
       volumes:
         - .:/var/www:delegated
       working_dir: /var/www
-      user: appuser  # Upewnij się, że tutaj jest poprawna nazwa użytkownika
+      user: appuser
       environment:
         - COMPOSER_MEMORY_LIMIT=-1
       ports:
