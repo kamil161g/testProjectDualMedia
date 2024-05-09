@@ -8,6 +8,7 @@ use App\Entity\Product;
 use App\Enum\Order\OrderStatusEnum;
 use App\Exception\Order\OrderNotExistsException;
 use App\Handler\Order\Query\ViewOrderQueryHandler;
+use App\Model\Order\ProductToSummaryOrderModel;
 use App\Model\Order\SummaryOrderModel;
 use App\Repository\OrderItemsRepository;
 use PhpSpec\ObjectBehavior;
@@ -51,7 +52,14 @@ class ViewOrderQueryHandlerSpec extends ObjectBehavior
         $orderItem->setQuantity(1);
 
         $orderItemsRepository->getByOrderId(1)->willReturn([$orderItem]);
+        $productToSummary = new ProductToSummaryOrderModel(1, 1, 'Test product');
 
-        $this->handle(1)->shouldReturnAnInstanceOf(SummaryOrderModel::class);
+        $this->handle(1)->shouldBeLike(new SummaryOrderModel(
+            1,
+            100,
+            'address',
+            OrderStatusEnum::PENDING,
+            [$productToSummary]
+        ));
     }
 }
