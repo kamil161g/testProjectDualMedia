@@ -10,7 +10,7 @@ use App\Manager\TransactionManager;
 /**
  * @author Kamil Gąsior <kamilgasior07@gmail.com>
  */
-readonly class DatabaseOperationSupport
+class DatabaseOperationSupport
 {
     private TransactionManager $transactionManager;
 

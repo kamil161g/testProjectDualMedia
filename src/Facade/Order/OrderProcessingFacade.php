@@ -64,5 +64,4 @@ class OrderProcessingFacade
             'pricingData' => $pricingData
         ];
     }
-
 }

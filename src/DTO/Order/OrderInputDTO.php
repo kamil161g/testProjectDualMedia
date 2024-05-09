@@ -7,7 +7,7 @@ namespace App\DTO\Order;
 /**
  * @author Kamil Gąsior <kamilgasior07@gmail.com>
  */
-readonly class OrderInputDTO
+class OrderInputDTO
 {
     private string $email;
 

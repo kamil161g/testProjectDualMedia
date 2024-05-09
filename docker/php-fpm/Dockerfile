@@ -6,17 +6,22 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev && \
-    docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd && \
-    chown -R www-data:www-data /var/www
+    docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd
 
+ARG USERID=1000
+ARG GROUPID=1000
 
-# Ustawienie katalogu roboczego
+RUN groupadd -g ${GROUPID} appuser && \
+    useradd -u ${USERID} -g appuser -m appuser -s /bin/bash
+
+RUN chown -R appuser:appuser /var/www
+
+USER appuser
+
 WORKDIR /var/www
 
-# Instalacja Composera
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Eksponowanie portu
 EXPOSE 9000
 
-CMD php-fpm
+CMD ["php-fpm"]

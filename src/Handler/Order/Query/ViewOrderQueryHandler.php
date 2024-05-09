@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Handler\Order\Query;
 
+use App\Exception\Order\OrderNotExistsException;
 use App\Model\Order\ProductToSummaryOrderModel;
 use App\Model\Order\SummaryOrderModel;
 use App\Repository\OrderItemsRepository;
-use OrderNotExistsException;
 
 /**
  * @author Kamil Gąsior <kamilgasior07@gmail.com>

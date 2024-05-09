@@ -7,10 +7,17 @@ namespace App\Model\Order;
 /**
  * @author Kamil Gąsior <kamilgasior07@gmail.com>
  */
-readonly class ProductToSummaryOrderModel
+class ProductToSummaryOrderModel
 {
-    public function __construct(private int $productId, private int $quantity, private string $productName)
+    private $productId;
+    private $quantity;
+    private $productName;
+
+    public function __construct(int $productId, int $quantity, string $productName)
     {
+        $this->productId = $productId;
+        $this->quantity = $quantity;
+        $this->productName = $productName;
     }
 
     public function getProductId(): int
