@@ -26,3 +26,5 @@ symfony
 3308
 
 strona dostepna pod: http://localhost:8888/
+
+dokumetnacja dla requestów: https://documenter.getpostman.com/view/8640351/2sA3JKeNSK
