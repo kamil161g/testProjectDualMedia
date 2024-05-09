@@ -25,3 +25,4 @@ symfony
 symfony
 3308
 
+strona dostepna pod: http://localhost:8888/
